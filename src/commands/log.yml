@@ -1,0 +1,6 @@
+description: >
+  This command logs build time
+steps:
+  - run:
+      name: Log
+      command: echo Build time is 10 seconds
