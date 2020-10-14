@@ -186,7 +186,7 @@ steps:
             then
               echo "This is the reporter job. Skipping"
             else
-              JOB_URL="https://circleci.com/api/v2/project/<< parameters.vcs-slug >>/<< parameters.org-name >>/$JOB_NUMBER"
+              JOB_URL="https://circleci.com/api/v2/project/<< parameters.vcs-slug >>/<< parameters.org-name >>/job/$JOB_NUMBER"
               JOB_DATA=$(curl -s "$JOB_URL")
               JOB_DURATION=$(echo "$JOB_DATA" | jq ".duration")
               echo "URL: JOB_URL"
