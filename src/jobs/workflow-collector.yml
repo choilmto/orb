@@ -184,7 +184,7 @@ steps:
             if [ "$JOB_NUMBER" = "$CIRCLE_BUILD_NUM" ];
             then
               echo "This is the reporter job. Skipping"
-            elif [ "$JOB_NAME" = "<< parameters.workflow-name >>" ];
+            elif [ "$JOB_NAME" = << parameters.workflow-name >> ];
             then
 
               JOB_URL="https://circleci.com/api/v2/project/<< parameters.vcs-slug >>/<< parameters.org-name >>/$JOB_NUMBER"
