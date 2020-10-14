@@ -36,11 +36,6 @@ steps:
         WF_DATA=$(curl -s "$DATA_URL")
         WF_MESSAGE=$(echo "$WF_DATA" | jq '.message')
 
-        JOB_URL="https://circleci.com/api/v2/insights/<< parameters.vcs-slug >>/<< parameters.org-name >>/$CIRCLE_PROJECT_REPONAME/workflows/<< parameters.workflow-name >>/jobs/$CIRCLE_BUILD_NUM"
-        JOB_DATA=$(curl -s "$JOB_URL")
-        JOB_DURATION=$(echo "$JOB_DATA" | jq '.duration')
-        echo "DURATION = $JOB_DURATION"
-
         # Exit if no Workflow.
         if [ "$WF_MESSAGE" = "\"Workflow not found\"" ];
         then
@@ -189,11 +184,19 @@ steps:
             if [ "$JOB_NUMBER" = "$CIRCLE_BUILD_NUM" ];
             then
               echo "This is the reporter job. Skipping"
-            else
+            elif [ "$JOB_NAME" = "<< parameters.workflow-name >>" ];
+            then
+
+              JOB_URL="https://circleci.com/api/v2/project/<< parameters.vcs-slug >>/<< parameters.org-name >>/$JOB_NUMBER"
+              JOB_DATA=$(curl -s "$JOB_URL")
+              JOB_DURATION=$(echo "$JOB_DATA" | jq '.duration')
+              echo "DURATION = $JOB_DURATION"
+
               # If this job is NOT the current job, check the status
               echo "JOB: $JOB_NAME"
               echo "JOB NUM: $JOB_NUMBER"
               echo "STATUS: $JOB_STATUS"
+
               #####
               # Send Job Data to SumoLogic
               #####
