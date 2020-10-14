@@ -185,9 +185,7 @@ steps:
             if [ "$JOB_NUMBER" = "$CIRCLE_BUILD_NUM" ];
             then
               echo "This is the reporter job. Skipping"
-            elif [ "$JOB_NAME" = "build" ];
-            then
-
+            else
               JOB_URL="https://circleci.com/api/v2/project/<< parameters.vcs-slug >>/<< parameters.org-name >>/$JOB_NUMBER"
               JOB_DATA=$(curl -s "$JOB_URL")
               JOB_DURATION=$(echo "$JOB_DATA" | jq '.duration')
