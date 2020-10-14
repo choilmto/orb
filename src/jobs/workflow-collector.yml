@@ -189,7 +189,7 @@ steps:
               JOB_URL="https://circleci.com/api/v2/project/<< parameters.vcs-slug >>/<< parameters.org-name >>/job/$JOB_NUMBER"
               JOB_DATA=$(curl -s "$JOB_URL")
               JOB_DURATION=$(echo "$JOB_DATA" | jq ".duration")
-              echo "URL: JOB_URL"
+              echo "URL: $JOB_URL"
               echo "DURATION: $JOB_DATA"
 
               # If this job is NOT the current job, check the status
