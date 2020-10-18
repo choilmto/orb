@@ -189,7 +189,8 @@ steps:
               JOB_URL="https://circleci.com/api/v2/project/<< parameters.vcs-slug >>/<< parameters.org-name >>/$CIRCLE_PROJECT_REPONAME/job/$JOB_NUMBER"
               JOB_DATA=$(curl -s -u ${CIRCLE_TOKEN}: "$JOB_URL")
               JOB_DURATION=$(echo "$JOB_DATA" | jq ".duration")
-              JOB_DURATION=$JOB_DURATION npm run log:build_time
+              echo "URL: $JOB_URL"
+              echo "DURATION: $JOB_DATA"
 
               # If this job is NOT the current job, check the status
               echo "JOB: $JOB_NAME"
