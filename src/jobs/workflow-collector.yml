@@ -26,6 +26,7 @@ parameters:
 executor: default
 steps:
   - jq/install
+  - checkout
   - run:
       name: Workflow Collector
       command: |
