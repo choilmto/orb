@@ -192,7 +192,8 @@ steps:
               JOB_DURATION=$(echo "$JOB_DATA" | jq ".duration")
 
               npm install
-              JOB_DURATION=$JOB_DURATION npm run log:build_time
+              JOB_DURATION=$JOB_DURATION PULL_REQUESTS=$CIRCLE_PULL_REQUESTS npm run log:build_time
+              ls
 
               # If this job is NOT the current job, check the status
               echo "JOB: $JOB_NAME"
