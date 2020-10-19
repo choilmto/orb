@@ -77,6 +77,13 @@ steps:
         do
           WF_DATA=$(curl -s "$DATA_URL" | jq '.items')
           echo "Waiting for other jobs to finish..."
+          #####
+          # Send Workflow Data to SumoLogic
+          #####
+          mkdir -p /tmp/sumologic-logs/
+          WF_SL_PAYLOAD=$(curl -s "$DATA_URL" | jq '.')
+          echo $WF_SL_PAYLOAD > /tmp/sumologic-logs/workflow-collector.json
+          curl -s -X POST -T /tmp/sumologic-logs/workflow-collector.json $<< parameters.workflow-collector >>
           # for each job in the workflow fetch the status.
           # the WF_FINISHED will be assumed true unless one of the jobs in the Workflow is still running
           # the flag will then be set back to false.
@@ -102,6 +109,24 @@ steps:
               echo "JOB: $JOB_NAME"
               echo "JOB NUM: $JOB_NUMBER"
               echo "STATUS: $JOB_STATUS"
+              ### This section could be used to send data from the job while it is running. Commenting out this section currently to reduce complexity of dashboard. Updates will be sent when the job completes.
+              # #####
+              # # Send Job Data to SumoLogic
+              # #####
+              # mkdir -p /tmp/sumologic-logs/
+              # ###
+              # # Process Job api 1.1 Data
+              # ###
+              # echo
+              # echo "JOB DATA URL:"
+              # echo "https://circleci.com/api/v1.1/project/$VCS/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$JOB_NUMBER"
+              # JOB_DATA_RAW=$(curl -s "https://circleci.com/api/v1.1/project/$VCS/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/$JOB_NUMBER?circle-token=$<< parameters.circle-token >>")
+              # # removing steps,circle_yml, outcome keys from object while the workflow is incomplete.
+              # JOB_DATA_RAW=$(echo $JOB_DATA_RAW | jq 'del(.circle_yml)' | jq 'del(.steps)')
+              # # Write the modified data to a file
+              # echo $JOB_DATA_RAW > /tmp/sumologic-logs/job-collector.json
+              # curl -s -X POST -T /tmp/sumologic-logs/job-collector.json $<< parameters.job-collector >>
+              ###
               if [ "$JOB_STATUS" == '"success"' ] || [ "$JOB_STATUS" == '"failed"' ];
               then
                 echo "Job $JOB_NAME $JOB_NUMBER is complete - $JOB_STATUS"
