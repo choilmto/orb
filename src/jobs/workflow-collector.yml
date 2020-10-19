@@ -167,7 +167,6 @@ steps:
         echo "SENDING FINAL WORKFLOW DATA"
         echo $WF_SL_PAYLOAD
         echo $WF_SL_PAYLOAD > /tmp/sumologic-logs/workflow-collector.json
-        curl -s -X POST -T /tmp/sumologic-logs/workflow-collector.json $<< parameters.workflow-collector >>
         ########################################
         # Send end-of-workflow jobs data to Sumologic
         ########################################
