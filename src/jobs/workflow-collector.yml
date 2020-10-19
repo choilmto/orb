@@ -164,9 +164,6 @@ steps:
         # Send end-of-workflow data to Sumologic
         ########################################
         WF_SL_PAYLOAD=$(curl -s "https://circleci.com/api/v2/workflow/$CIRCLE_WORKFLOW_ID?circle-token=$<< parameters.circle-token >>" | jq '.')
-        echo "SENDING FINAL WORKFLOW DATA"
-        echo $WF_SL_PAYLOAD
-        echo $WF_SL_PAYLOAD > /tmp/sumologic-logs/workflow-collector.json
         ########################################
         # Send end-of-workflow jobs data to Sumologic
         ########################################
