@@ -8,9 +8,6 @@ parameters:
   org-name:
     type: string
     description: "Enter the name your organization uses in CircleCI."
-  vcs-slug:
-    type: string
-    description: "Enter the slug used to manage your repo ('gh' for github or 'bb' for bitbucket)."
   workflow-name:
     type: string
     default: "build"
@@ -22,6 +19,7 @@ steps:
   - run:
       name: Workflow Collector
       command: |
+        npm install
         ###############
         # Begin Collecting
         ###############
@@ -143,19 +141,17 @@ steps:
             JOB_NAME=$(echo "$JOB_DATA" | jq ".name")
 
             # Only check the job if it is not this current job
-            echo "VSC_SHORT: $VCS_SHORT"
             if [ "$JOB_NUMBER" = "$CIRCLE_BUILD_NUM" ];
             then
               echo "This is the reporter job. Skipping"
             elif [[ "$JOB_NAME" = *build* ]];
             then
-              JOB_URL="https://circleci.com/api/v2/project/<< parameters.vcs-slug >>/<< parameters.org-name >>/$CIRCLE_PROJECT_REPONAME/job/$JOB_NUMBER"
+              JOB_URL="https://circleci.com/api/v2/project/$VCS_SHORT/<< parameters.org-name >>/$CIRCLE_PROJECT_REPONAME/job/$JOB_NUMBER"
               JOB_DATA=$(curl -s -u ${CIRCLE_TOKEN}: "$JOB_URL")
               JOB_DURATION=$(echo "$JOB_DATA" | jq ".duration")
               VERSION=$(cat package.json | jq ".version")
 
-              npm install
-              JOB_DURATION=$JOB_DURATION PULL_REQUESTS=$CIRCLE_PULL_REQUESTS VERSION=$VERSION npm run log:build_time
+              JOB_DURATION=$JOB_DURATION PULL_REQUESTS=$CIRCLE_PULL_REQUESTS VERSION=$VERSION JOB_NAME=$JOB_NAME npm run log:build_time
 
               # If this job is NOT the current job, check the status
               echo "JOB: $JOB_NAME"
