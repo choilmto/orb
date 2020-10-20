@@ -52,7 +52,7 @@ steps:
         if [ "$WF_LENGTH" -lt 2 ];
         then
           echo "Only a single job has been found in the workflow, indicating this reporter is the only job in the pipeline."
-          echo "Please add other jobs to the Workflow you wish to collect data on to send to Sumologic"
+          echo "Please add other jobs to the Workflow you wish to collect data on."
           exit 0
         fi
         #####################
