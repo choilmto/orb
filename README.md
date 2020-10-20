@@ -3,39 +3,17 @@
 [![CircleCI Build Status](https://circleci.com/gh/choilmto/orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/choilmto/orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/choilmto/orb)](https://circleci.com/orbs/registry/orb/choilmto/orb) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/choilmto/orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
 
 
+# About this project
 
-A starter template for orb projects. Build, test, and publish orbs automatically on CircleCI with [Orb-Tools](https://circleci.com/orbs/registry/orb/circleci/orb-tools).
+Currently, CircleCI aggregates build times as part of their Insights they provide users. However, the information they provide looks at trends going back as far as 90 days. This orb gives Node users a granular view of their build times by piping the information to their existing log service.
 
-Additional READMEs are available in each directory.
+# How to use
 
+For an example code base that uses the orb, see [https://github.com/choilmto/orbtoberfest-example](https://github.com/choilmto/orbtoberfest-example). For every build step that matches the pattern `*build*`, this orb will capture the length of time CircleCI takes to build. The orb expects npm to be able to run the script `log:build_time`, where `process.env` variables will passed.
 
-
-## Resources
-
-[CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/choilmto/orb) - The official registry page of this orb for all versions, executors, commands, and jobs described.
-[CircleCI Orb Docs](https://circleci.com/docs/2.0/orb-intro/#section=configuration) - Docs for using and creating CircleCI Orbs.
-
-### How to Contribute
-
-We welcome [issues](https://github.com/choilmto/orb/issues) to and [pull requests](https://github.com/choilmto/orb/pulls) against this repository!
-
-### How to Publish
-* Create and push a branch with your new features.
-* When ready to publish a new production version, create a Pull Request from fore _feature branch_ to `master`.
-* The title of the pull request must contain a special semver tag: `[semver:<segement>]` where `<segment>` is replaced by one of the following values.
-
-| Increment | Description|
-| ----------| -----------|
-| major     | Issue a 1.0.0 incremented release|
-| minor     | Issue a x.1.0 incremented release|
-| patch     | Issue a x.x.1 incremented release|
-| skip      | Do not issue a release|
-
-Example: `[semver:major]`
-
-* Squash and merge. Ensure the semver tag is preserved and entered as a part of the commit message.
-* On merge, after manual approval, the orb will automatically be published to the Orb Registry.
-
-
-For further questions/comments about this or other orbs, visit the Orb Category of [CircleCI Discuss](https://discuss.circleci.com/c/orbs).
-
+| Variable name | Value                                           |
+|---------------|:------------------------------------------------|
+| JOB_DURATION  | The time CircleCI takes to build in milliseconds|
+| VERSION       | The version listed in `package.json`            |
+| PULL_REQUESTS | Information on related pull requests            |
+| JOB_NAME      | The name of the job in `config.yml`             |
